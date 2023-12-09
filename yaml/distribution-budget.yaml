@@ -1,0 +1,12 @@
+# distribution-budget.yaml
+
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: disruption-budget
+  namespace: exam
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: backend

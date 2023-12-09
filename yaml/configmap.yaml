@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-app-config
+  namespace: exam
+data:
+  host: mysql-service
+  dbname: dockerdb
+  username: root
+  allowed-origin: http://frontend.com

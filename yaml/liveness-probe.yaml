@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-bapp
+  namespace: exam
+spec:
+  containers:
+  - name: backend
+    image: ouwalid/backend:1.0.0
+    resources:
+      limits:
+        cpu: "500m"  # Adjust the CPU limit based on your requirements
+        memory: "512Mi"  # Adjust the memory limit based on your requirements
+      requests:
+        cpu: "100m"  # Adjust the CPU request based on your requirements
+        memory: "256Mi"  # Adjust the memory request based on your requirements
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: 8080
+      initialDelaySeconds: 3
+      periodSeconds: 10

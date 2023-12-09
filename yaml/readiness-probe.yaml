@@ -1,0 +1,24 @@
+# readiness-probe.yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-app
+  namespace: exam
+spec:
+  containers:
+  - name: backend
+    image: ouwalid/backend:1.0.0
+    resources:
+      limits:
+        cpu: "500m"  # Adjust the CPU limit based on your requirements
+        memory: "512Mi"  # Adjust the memory limit based on your requirements
+      requests:
+        cpu: "100m"  # Adjust the CPU request based on your requirements
+        memory: "256Mi"  # Adjust the memory request based on your requirements
+    readinessProbe:
+      httpGet:
+        path: /readiness  # Adjust the path based on your application's readiness check endpoint
+        port: 8080
+      initialDelaySeconds: 5
+      periodSeconds: 15
