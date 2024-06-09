@@ -1,0 +1,38 @@
+version: "3.8"
+services:
+  mysql-container:
+    image: mysql:latest # Assurez-vous de remplacer "votreutilisateur" par votre nom d'utilisateur Docker Hub
+    container_name: mysql-container
+    ports:
+      - 3630:3630
+    networks:
+      - mynetwork
+    environment:
+      MYSQL_ROOT_PASSWORD: walid
+      MYSQL_DATABASE: my_database
+    volumes:
+      - mysql-data:/var/lib/mysql
+  backend:
+    image: localhost:5000/registrybackend
+    container_name: backend
+    ports:
+      - 8080:8080
+    networks:
+      - mynetwork
+    depends_on:
+      - mysql-container
+  frontend:
+    image: localhost:5000/registryfrontend
+    container_name: frontend
+    ports:
+      - 8081:80
+    networks:
+      - mynetwork
+    depends_on:
+      - backend
+volumes:
+  mysql-data:
+    driver: local
+networks:
+  mynetwork:
+    driver: bridge

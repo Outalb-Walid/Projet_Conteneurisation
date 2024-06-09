@@ -1,0 +1,60 @@
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-app-service
+  namespace: exam
+spec:
+  selector:
+    app: backend
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-app-deployment
+  namespace: exam
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: ouwalid/backend:1.0.0
+          ports:
+            - containerPort: 8080
+          env:
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: password
+            - name: MYSQL_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-app-config
+                  key: username
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-app-config
+                  key: host
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-app-config
+                  key: dbname
+            - name: ALLOWED_ORIGIN
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-app-config
+                  key: allowed-origin
